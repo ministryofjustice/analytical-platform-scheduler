@@ -2,9 +2,10 @@ import os
 import requests
 import time
 import json
+import logging
 from threading import Thread
 from kubernetes import client, config
-from flask import Flask
+from flask import Flask, render_template
 from flask_apscheduler import APScheduler
 
 app = Flask(__name__) 
@@ -28,6 +29,8 @@ APP_SERVICE = os.getenv('APP_SERVICE')
 APP_PORT = os.getenv('APP_PORT')
 INGRESS = os.getenv('INGRESS')
 
+logging.basicConfig(level=logging.DEBUG)
+
 class Config(object):
     SCHEDULER_API_ENABLED = True
 
@@ -37,7 +40,7 @@ def set_replicas(apps_v1_api, DEPLOYMENT, NAMESPACE, count):
 
 def check_replicas(apps_v1_api, DEPLOYMENT, NAMESPACE):
     readiness = apps_v1_api.read_namespaced_deployment(DEPLOYMENT,NAMESPACE)
-    return readiness.status.available_replicas
+    return readiness.status.ready_replicas
 
 def set_ingress(networking_v1_api, INGRESS, NAMESPACE, IDLE_URL, SERVICE, PORT):
     body = dict({
@@ -77,14 +80,13 @@ def check_activity():
     last_active = requests.get("https://"+IDLE_URL+"/last-seen")
 
     if last_active.status_code != 200:
-        print("last seen endpoint broken, bailing")
+        logging.debug("Last seen endpoint not returning 200, bailing")
         return
 
     if  (int(time.time()-int(MAX_IDLE_TIME)) > int(last_active.text)):
-        print("current time minus MAX_IDLE_TIME is greater than last activity")
+        logging.info("Max idle time exceeded, sleeping deployment")
         # switch ingress over to scheduler
         ingress = set_ingress(networking_v1_api, INGRESS, NAMESPACE, IDLE_URL, SCHEDULER_SERVICE, SCHEDULER_PORT)
-        print(SCHEDULER_SERVICE)
 
         # shut down app
         deployment = set_replicas(apps_v1_api,DEPLOYMENT,NAMESPACE,0)
@@ -99,8 +101,11 @@ def catch_all(): # TODO: make this actually catch all
     global networking_v1_api
 
     readiness = check_replicas(apps_v1_api,DEPLOYMENT,NAMESPACE)
-    print(readiness)
-    set_replicas(apps_v1_api,DEPLOYMENT,NAMESPACE,1)
-    set_ingress(networking_v1_api, INGRESS, NAMESPACE, IDLE_URL, APP_SERVICE, APP_PORT)
+    logging.info("Replicas: %s" % readiness)
+    set_replicas(apps_v1_api,DEPLOYMENT,NAMESPACE,1) 
+    if readiness != None:
+        set_ingress(networking_v1_api, INGRESS, NAMESPACE, IDLE_URL, APP_SERVICE, APP_PORT)
+        logging.info("Replica query returning not null: switching ingress")
+        return render_template("ready.html")
 
-    return 'your instance has been idled - but have no fear, you have woken it back up. refresh this page in a minute.' # TODO: basic redirect loop with 5 second delay
+    return render_template("index.html")
