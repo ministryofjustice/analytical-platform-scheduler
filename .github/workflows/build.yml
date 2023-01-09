@@ -43,7 +43,7 @@ jobs:
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           push: true
-          tags: "ghcr.io/${{ GITHUB_ACTION_REPOSITORY }}:${{ steps.tag.outputs.new_tag }}"
+          tags: "ghcr.io/${{ env.GITHUB_ACTION_REPOSITORY }}:${{ steps.tag.outputs.new_tag }}"
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Build and push Docker image
