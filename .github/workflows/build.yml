@@ -1,9 +1,6 @@
 name: Create and publish image
 
-on:
-  push:
-    tags:
-      - "**"
+on: push
 
 env:
   REGISTRY: ghcr.io
