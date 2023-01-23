@@ -33,6 +33,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: false
+          DEFAULT_BUMP: patch
         
       - name: Build, tag, and push image to Amazon ECR
         env:
