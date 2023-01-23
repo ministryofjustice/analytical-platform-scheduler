@@ -9,7 +9,7 @@ jobs:
   build-and-push-image:
     runs-on: [self-hosted, management-ecr]
     permissions:
-      contents: read,write
+      contents: write
 
     steps:
       - name: Checkout repository
