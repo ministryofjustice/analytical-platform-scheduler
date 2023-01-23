@@ -3,7 +3,7 @@ name: Create and publish image
 on: push
 
 env:
-  REGISTRY: ghcr.io
+  REGISTRY: 593291632749.dkr.ecr.eu-west-1.amazonaws.com
   IMAGE_NAME: ${{ github.repository }}
 jobs:
   build-and-push-image:
@@ -16,12 +16,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
