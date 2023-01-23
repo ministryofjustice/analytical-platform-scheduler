@@ -1,12 +1,8 @@
 name: Create and publish image
 
-on:
-  push:
-    tags:
-      - '*'
+on: push
 
 env:
-  ECR_REGISTRY: 593291632749.dkr.ecr.eu-west-1.amazonaws.com
   ECR_REPOSITORY: "analytical-platform-scheduler"
 jobs:
   build-and-push-image:
@@ -41,7 +37,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.ECR_NAME }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
           NEW_TAG_V: ${{ steps.bump-id.outputs.new_tag }}
         shell: bash
         run: |
