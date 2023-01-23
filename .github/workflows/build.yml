@@ -1,4 +1,3 @@
-.github/workflows/build.yml
 name: Create and publish image
 
 on: push
