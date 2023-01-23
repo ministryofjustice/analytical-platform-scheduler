@@ -7,10 +7,9 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 jobs:
   build-and-push-image:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, management-infrastructure]
     permissions:
       contents: read
-      packages: write
 
     steps:
       - name: Checkout repository
