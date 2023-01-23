@@ -4,7 +4,7 @@ on: push
 
 env:
   REGISTRY: 593291632749.dkr.ecr.eu-west-1.amazonaws.com
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: "analytical-platform-scheduler"
 jobs:
   build-and-push-image:
     runs-on: [self-hosted, management-ecr]
