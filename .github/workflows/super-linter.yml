@@ -1,0 +1,35 @@
+---
+name: 🦝 Super-Linter
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
+
+permissions: {}
+
+jobs:
+  super-linter:
+    name: Super-Linter
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Super-Linter
+        id: super_linter
+        uses: super-linter/super-linter/slim@4e8a7c2bf106c4c766c816b35ec612638dc9b6b2 # v7.3.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_LUA: false
