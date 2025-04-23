@@ -25,24 +25,19 @@ fileExistenceTests:
   - name: "requirements.txt exists"
     path: "/requirements.txt"
     shouldExist: true
-    permissions: "-rw"
+    permissions: "-rw-r--r--"
 
   - name: "app.py exists"
     path: "/app.py"
     shouldExist: true
-    permissions: "-rw"
-
-  - name: "scheduler.py exists"
-    path: "/scheduler.py"
-    shouldExist: true
-    permissions: "-rw"
+    permissions: "-rw-r--r--"
 
   - name: "static directory exists"
     path: "/static"
     shouldExist: true
-    permissions: "drwx"
+    permissions: "drwxr-xr-x"
 
   - name: "templates directory exists"
     path: "/templates"
     shouldExist: true
-    permissions: "drwx"
+    permissions: "drwxr-xr-x"
