@@ -1,9 +1,15 @@
 schemaVersion: 2.0.0
+
+containerRunOptions:
+  user: "root"
+
 commandTests:
   - name: "python version"
     command: "python"
     args: ["--version"]
-    expectedOutput: ["Python 3.11."]
+    expectedOutput: 
+      - "Python 3.11."
+    exitCode: 0
 
   - name: "pip version"
     command: "pip"
@@ -19,26 +25,32 @@ fileExistenceTests:
   - name: "requirements.txt exists"
     path: "/requirements.txt"
     shouldExist: true
+    permissions: "-rw"
 
   - name: "app.py exists"
     path: "/app.py"
     shouldExist: true
+    permissions: "-rw"
 
   - name: "scheduler.py exists"
     path: "/scheduler.py"
     shouldExist: true
+    permissions: "-rw"
 
   - name: "static directory exists"
     path: "/static"
     shouldExist: true
+    permissions: "drwx"
 
   - name: "templates directory exists"
     path: "/templates"
     shouldExist: true
+    permissions: "drwx"
 
 metadataTest:
   envVars:
     - key: "PATH"
       present: true
-  exposedPorts: ["5000"]
+  exposedPorts: 
+    - "5000"
   workdir: "/"
