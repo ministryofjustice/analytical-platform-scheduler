@@ -1,0 +1,43 @@
+schemaVersion: 2.0.0
+
+containerRunOptions:
+  user: "root"
+
+commandTests:
+  - name: "python version"
+    command: "python"
+    args: ["--version"]
+    expectedOutput:
+      - "Python 3.11."
+    exitCode: 0
+
+  - name: "pip version"
+    command: "pip"
+    args: ["--version"]
+    exitCode: 0
+
+  - name: "gunicorn installed"
+    command: "gunicorn"
+    args: ["--version"]
+    exitCode: 0
+
+fileExistenceTests:
+  - name: "requirements.txt exists"
+    path: "/requirements.txt"
+    shouldExist: true
+    permissions: "-rw-r--r--"
+
+  - name: "app.py exists"
+    path: "/app.py"
+    shouldExist: true
+    permissions: "-rw-r--r--"
+
+  - name: "static directory exists"
+    path: "/static"
+    shouldExist: true
+    permissions: "drwxr-xr-x"
+
+  - name: "templates directory exists"
+    path: "/templates"
+    shouldExist: true
+    permissions: "drwxr-xr-x"

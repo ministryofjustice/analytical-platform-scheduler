@@ -1,0 +1,35 @@
+---
+name: 🦝 Super Linter
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  super-linter:
+    name: Super Linter
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+    uses: ministryofjustice/analytical-platform-github-actions/.github/workflows/reusable-super-linter.yml@604db7bf80e5af74f8c081d47a406d293eeae029 # v2.1.0
+    with:
+      # Skipping the following checks as migrating as is
+      super-linter-variables: |
+        {
+          "VALIDATE_PYTHON_BLACK": false,
+          "VALIDATE_PYTHON_PYLINT": false,
+          "VALIDATE_PYTHON_FLAKE8": false,
+          "VALIDATE_PYTHON_ISORT": false,
+          "VALIDATE_PYTHON_MYPY": false,
+          "VALIDATE_PYTHON_PYINK": false,
+          "VALIDATE_PYTHON_RUFF": false,
+          "VALIDATE_CSS": false,
+          "VALIDATE_DOCKERFILE_HADOLINT": false,
+          "VALIDATE_HTML": false,
+          "VALIDATE_JSCPD": false,
+          "VALIDATE_MARKDOWN": false
+        }
