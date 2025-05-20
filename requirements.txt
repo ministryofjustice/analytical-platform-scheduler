@@ -3,3 +3,4 @@ Flask_APScheduler==1.12.4
 kubernetes==25.3.0
 requests==2.32.2
 gunicorn==23.0.0
+setuptools==78.1.1
