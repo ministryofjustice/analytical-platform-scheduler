@@ -1,10 +1,7 @@
-.PHONY: build debug scan test run
+.PHONY: build debug test run
 
 IMAGE_NAME ?= ghcr.io/ministryofjustice/analytical-platform-scheduler
 IMAGE_TAG  ?= local
-
-TRIVY_DB_REPOSITORY ?= public.ecr.aws/aquasecurity/trivy-db:2
-TRIVY_JAVA_DB_REPOSITORY ?= public.ecr.aws/aquasecurity/trivy-java-db:1
 
 debug: build
 	docker run --rm -it --publish 3000:3000 --entrypoint /bin/sh $(IMAGE_NAME):$(IMAGE_TAG)
@@ -14,9 +11,6 @@ run: build
 
 test: build
 	container-structure-test test --platform linux/amd64 --config test/container-structure-test.yml --image $(IMAGE_NAME):$(IMAGE_TAG)
-
-scan: build
-	trivy image --platform linux/amd64 --severity HIGH,CRITICAL $(IMAGE_NAME):$(IMAGE_TAG)
 
 build:
 	@ARCH=`uname --machine`; \
