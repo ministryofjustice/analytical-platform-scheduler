@@ -1,7 +1,7 @@
 # checkov:skip=CKV_DOCKER_2: Migrate as is
 # checkov:skip=CKV_DOCKER_3: Migrate as is
 
-FROM python:3.11-slim-bullseye
+FROM python:3.11-slim-bookworm
 RUN apt-get update && apt-get install -y pkg-config
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
