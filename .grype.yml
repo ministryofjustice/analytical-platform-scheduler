@@ -1,3 +1,11 @@
 ---
 # Grype configuration file for container vulnerability scanning
 # https://oss.anchore.com/docs/reference/grype/configuration/
+
+ignore:
+  - vulnerability: GHSA-58pv-8j8x-9vj2
+  # jaraco-context 5.3.0 is vendored inside setuptools/_vendor/. Not a standalone dependency.
+  # Remove this ignore once setuptools ships a release with jaraco.context >= 6.1.0 vendored.
+  - vulnerability: GHSA-8rrh-rw8j-w5fx
+  # wheel 0.45.1 is vendored inside setuptools/_vendor/. The standalone wheel package is already pinned to 0.46.2 in requirements.txt.
+  # Remove this ignore once setuptools ships a release with wheel >= 0.46.2 vendored.
