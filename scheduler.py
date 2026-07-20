@@ -76,8 +76,8 @@ def set_ingress(networking_v1_api, INGRESS, NAMESPACE, IDLE_URL, SERVICE, PORT):
 # scheduled job to periodically check to see if an instance has been used recently and sleep it if not
 @scheduler.task('interval', id='check_activity', seconds=10)
 def check_activity():
-    
-    last_active = requests.get("https://"+IDLE_URL+"/last-seen")
+
+    last_active = requests.get(f"http://{APP_SERVICE}:{APP_PORT}/last-seen")
 
     if last_active.status_code != 200:
         logging.debug("Last seen endpoint not returning 200, bailing")
